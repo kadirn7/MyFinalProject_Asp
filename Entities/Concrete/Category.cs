@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Concrete
 {
-    public class Category:IEntitiy
+    public class Category:IEntity
     {
         //Çıplak Class Kalmasın.
         public int CategoryId { get; set; } 

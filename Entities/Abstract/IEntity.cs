@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Entities.Abstract
 {
     //IEntity implement eden class bir veritabanı tablosudur.
-    public interface IEntitiy
+    public interface IEntity
     {
 
     }

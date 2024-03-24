@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Entities.Concrete
 {
     /* Diğer katmanların erişebilmesi için public yaparız..*/
-    public class Product: IEntitiy    
+    public class Product: IEntity    
     {
         public int ProductId { get; set; }  
         public int CategoryId { get; set; }

@@ -3,6 +3,7 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,14 +33,15 @@ namespace DataAccess.Concrete.InMemory
         {
             //Bu kod çalışmaz neden? listeden eleman normalde silinir ama burda silinmiyor neden? Referans tip bu şekilde silinmez.
             //_products.Remove(product);
-            
-           
-           
-            
-            Product productToDelete= null;
+
+
+
+
+
 
             // bu şekilde yazmamız gerekir .
             /*
+            Product productToDelete = null;
             foreach (var p in _products) 
             {
                 if(product.ProductId ==p.ProductId) 
@@ -53,9 +55,10 @@ namespace DataAccess.Concrete.InMemory
             //Link kullanarak yaparsak daha kısa olur.
             //Her p için P nin productId Si product(parametre ile gönderdiğimiz)ın ProductId sine eşitle.
             //bunun referansını producttodelete e eşitle demek.
+            Product productToDelete = null;
             productToDelete = _products.SingleOrDefault(p=>p.ProductId==product.ProductId); 
 
-            _products.Remove(productToDelete);
+            _products.Remove(productToDelete);  
 
 
         }
@@ -80,6 +83,16 @@ namespace DataAccess.Concrete.InMemory
         {
             // Where koşulu koşula uyanları yeni bir listeye ekler.
             return _products.Where(p=>p.CategoryId==categoryId).ToList();
+        }
+
+        public List<Product> GetAll(Expression<Func<Product, bool>> filter = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Product Get(Expression<Func<Product, bool>> filter)
+        {
+            throw new NotImplementedException(); 
         }
     }
 }
