@@ -1,4 +1,5 @@
 ﻿using Core.DataAccess;
+using DataAccess.DTOs;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace DataAccess.Abstract
 {
     public interface IProductDal:IEntityRepository<Product>
     {
-        
+        List<ProductDetailDto> GetProductDetails();
     }
 }
 //Code Refactoring //Kod iyileştirme.
