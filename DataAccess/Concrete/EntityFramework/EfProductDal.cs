@@ -49,7 +49,7 @@ namespace DataAccess.Concrete.EntityFramework
                 return filter==null 
                     ? context.Set<Product>().ToList() 
                     : context.Set<Product>().Where(filter).ToList();
-            }
+            } 
         }
 
         public void Update(Product entity)
