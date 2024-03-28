@@ -21,17 +21,46 @@ namespace WebAPI.Controllers
         }
         
 
-        [HttpGet]
-        public List<Product> Get()
+        [HttpGet("getall")]
+        public IActionResult Getall()
         {
+            //Swagger
             var result=_productService.GetAll();
-            return result.Data;
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
 
             //Dependency chain-- Bagımlılık zinciri
             //IProductService productService = new ProductManager(new EfProductDal());
             //var result = productService.GetAll();
             //return result.Data;
-           
+            
+
+        }
+        [HttpGet("getbyid")]
+        public IActionResult GetById(int id)
+        {
+            var result = _productService.GetById(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+
+        }
+        
+        [HttpPost("add")]
+        //Post requestlerde sana veri vermesi gerekiyor veri göstermesi gerekmiyor.
+        public IActionResult Add(Product product)
+        {
+            var result = _productService.Add(product);
+            if (result.Success)
+            {
+                return Ok(result);
+            } 
+            return BadRequest();    
         }
     }
 }

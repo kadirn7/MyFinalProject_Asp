@@ -11,9 +11,9 @@ namespace ConsoleUI
         {
             // //
             //Data Transformation Object
-             ProductTest();
+            // ProductTest();
             // CategoryTest();
-
+            ProductGet();
         }
 
         private static void CategoryTest()
@@ -42,6 +42,17 @@ namespace ConsoleUI
             }
 
             
+        }
+        private static void ProductGet()
+        {
+            ProductManager productManager = new ProductManager(new EfProductDal());
+            var result = productManager.GetById(3);
+            
+            if(result.Success == true)
+            {
+                Console.WriteLine(result.Data.ProductName + "/" + result.Data.UnitPrice);
+            }
+
         }
     }
 }
