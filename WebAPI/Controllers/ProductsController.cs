@@ -14,6 +14,7 @@ namespace WebAPI.Controllers
         //Loosely coupled gevşek bağlılık.
         //naming convertion
         //IoC Container -->Inversion of Control
+        
         IProductService _productService;
         public ProductsController(IProductService productService)
         {
