@@ -56,10 +56,9 @@ namespace DataAccess.Concrete.InMemory
             //Link kullanarak yaparsak daha kısa olur.
             //Her p için P nin productId Si product(parametre ile gönderdiğimiz)ın ProductId sine eşitle.
             //bunun referansını producttodelete e eşitle demek.
-            Product productToDelete = null;
-            productToDelete = _products.SingleOrDefault(p=>p.ProductId==product.ProductId); 
-
-            _products.Remove(productToDelete);  
+            //Product productToDelete = null;
+            Product productToDelete = _products.SingleOrDefault(p => p.ProductId == product.ProductId);
+            _products.Remove(productToDelete);
 
 
         }

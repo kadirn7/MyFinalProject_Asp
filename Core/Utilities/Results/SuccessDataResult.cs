@@ -16,7 +16,7 @@ namespace Core.Utilities.Results
         {//mesaj işlerine girmek istemediği zaman
 
         }
-        public SuccessDataResult(string message):base(default,true,message) 
+        public SuccessDataResult(string message) : base(default, true, message)
         {//datayı default haliyle göndermek isterse.
 
         }
