@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Extras.DynamicProxy;
 using Business.Abstract;
+using Business.CCS;
 using Business.Concrete;
 using Castle.DynamicProxy;
 using Core.Utilities.Interceptors;
@@ -23,7 +24,7 @@ namespace Business.DependencyResolvers.Autofac
             //singleInstance tek bir Instance tutar. Herkese aynı Instance'ı verir. //newleme işlemlerini bunlar yapar.
             builder.RegisterType<ProductManager>().As<IProductService>().SingleInstance();
             builder.RegisterType<EfProductDal>().As<IProductDal>().SingleInstance();
-
+            builder.RegisterType<FileLogger>().As<ILogger>().SingleInstance();
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

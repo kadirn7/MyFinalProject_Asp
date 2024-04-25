@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.CCS;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -23,7 +24,7 @@ namespace Business.Concrete
     public class ProductManager : IProductService
     {
         IProductDal _productDal;
-
+        ILogger _logger;
         public ProductManager(IProductDal productDal)
         {
             _productDal = productDal;
@@ -31,12 +32,18 @@ namespace Business.Concrete
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
-            //business codes
-            //validation
-                               
-          _productDal.Add(product); 
+            //bir kategoride en fazla 10 ürün olabilir
+            //Aynı isimde ürün eklenemez.
+            if (CheckIfProductCountofCategoryCorrect(product.CategoryId).Success && CheckIfProductNameExits(product.ProductName).Success)
+            {
+                _productDal.Add(product);
 
-            return new SuccessResult(Messages.ProductAdded);
+                return new SuccessResult(Messages.ProductAdded);
+            }
+            return new ErrorResult();
+            
+
+         
            
         }
 
@@ -68,6 +75,39 @@ namespace Business.Concrete
         public IDataResult<List<ProductDetailDto>> GetProductDetails()
         {
             return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetails());
+        }
+
+        [ValidationAspect(typeof(ProductValidator))]
+        public IResult Update(Product product)
+        {
+            //bir kategoride en fazla 10 ürün olabilir
+            var result = _productDal.GetAll(p => p.CategoryId == product.CategoryId).Count;
+            if (result >= 10)
+            {
+                return new ErrorResult(Messages.ProductCounofCategoryError);
+            }
+
+            throw new NotImplementedException();
+        }
+        private IResult CheckIfProductCountofCategoryCorrect(int categoryId)
+        {
+            var result = _productDal.GetAll(p => p.CategoryId == categoryId).Count;
+            if (result >= 10)
+            {
+                return new ErrorResult(Messages.ProductCounofCategoryError);
+            }
+            return new SuccessResult();
+
+        }
+        private IResult CheckIfProductNameExits(string productName)
+        {
+            var result = _productDal.GetAll(p => p.ProductName == productName).Any();
+            if (result)
+            {
+                return new ErrorResult(Messages.ProductNameAlreadyExists);
+            }
+            
+            return new SuccessResult();
         }
     }
 }
