@@ -3,20 +3,12 @@ using Business.CCS;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
-using Core.CrossCuttingConcerns.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
-using DataAccess.Concrete.InMemory;
+
 using DataAccess.DTOs;
 using Entities.Concrete;
-using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace Business.Concrete
@@ -24,27 +16,30 @@ namespace Business.Concrete
     public class ProductManager : IProductService
     {
         IProductDal _productDal;
-        ILogger _logger;
-        public ProductManager(IProductDal productDal)
+        ICategoryService _categoryService;  // mikroservis mimarisi // Servis enjection yapıyoruz bu gibi durumlarda.
+        //bir entity manager kendinden başka başka bir dalı enjecte edemez.
+        public ProductManager(IProductDal productDal,ICategoryService categoryService)
         {
             _productDal = productDal;
+            _categoryService = categoryService;
         }
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
             //bir kategoride en fazla 10 ürün olabilir
             //Aynı isimde ürün eklenemez.
-            if (CheckIfProductCountofCategoryCorrect(product.CategoryId).Success && CheckIfProductNameExits(product.ProductName).Success)
+            //Eğer mevcut kategori sayısı 15'i geçtiyse sisteme yeni ürün eklenemez. //mikroservis mimarisi mantığı
+            IResult result= BusinessRules.Run(CheckIfProductNameExits(product.ProductName),
+                CheckIfProductCountofCategoryCorrect(product.CategoryId),CheckIfCategoryLimitExceded()); 
+            //başka kural geldiğinde , atıp o kuralı buraya yazmak yeterli başka bir şey değiştirmeye gerek yok .
+            if(result != null)
             {
-                _productDal.Add(product);
-
-                return new SuccessResult(Messages.ProductAdded);
+                return result;
             }
-            return new ErrorResult();
-            
+            _productDal.Add(product);
 
-         
-           
+            return new SuccessResult(Messages.ProductAdded);
+
         }
 
         public IDataResult<List<Product>> GetAll()
@@ -107,6 +102,15 @@ namespace Business.Concrete
                 return new ErrorResult(Messages.ProductNameAlreadyExists);
             }
             
+            return new SuccessResult();
+        }
+        private IResult CheckIfCategoryLimitExceded()
+        {
+            var result = _categoryService.GetAll();
+            if(result.Data.Count > 15) 
+            {
+                return new ErrorResult(Messages.CategoryLimitExceded);
+            }
             return new SuccessResult();
         }
     }
