@@ -11,6 +11,7 @@ namespace Business.Abstract
     public interface ICategoryService
     {
         IDataResult< List<Category>>GetAll();
+        public void getALL();
         IDataResult<Category> GetById(int categoryId);
     }
 }
