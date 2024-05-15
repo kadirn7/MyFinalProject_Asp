@@ -9,24 +9,28 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class UserManager:IUserService
+    public class UserManager : IUserService
     {
-        IUserDal _userdal;
-        public UserManager(IUserDal userdal)
+        IUserDal _userDal;
+
+        public UserManager(IUserDal userDal)
         {
-            _userdal = userdal;
+            _userDal = userDal;
         }
-        public List<OperationClaim>GetClaims(User user)
+
+        public List<OperationClaim> GetClaims(User user)
         {
-            return _userdal.GetClaims(user);
+            return _userDal.GetClaims(user);
         }
+
         public void Add(User user)
         {
-            _userdal.Add(user);
+            _userDal.Add(user);
         }
-        public User GetByMail(string mail) 
+
+        public User GetByMail(string email)
         {
-            return _userdal.Get(u => u.Email == mail);
+            return _userDal.Get(u => u.Email == email);
         }
     }
 }

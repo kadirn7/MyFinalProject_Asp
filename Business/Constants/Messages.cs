@@ -26,7 +26,7 @@ namespace Business.Constants
 
         public static string UserNotFound = "Kullanıcı bulunamadı";
         public static string PasswordError = "Paralo hatalı";
-        public static string SuccessfullLogin = "Giriş başarılı ";
+        public static string SuccessfulLogin = "Giriş başarılı ";
         internal static string AccessTokenCreated = "Token oluşturma başarılı. ";
     }
 }
